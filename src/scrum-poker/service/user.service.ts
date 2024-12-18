@@ -94,4 +94,8 @@ export class UserService {
       this.voteService.deleteVote(sessionId, username);
     }
   }
+
+  checkUserPullLength(sessionId: string) {
+    return this.users[sessionId]?.length;
+  }
 }

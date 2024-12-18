@@ -67,6 +67,12 @@ export class RoomService {
 
       this.rooms[sessionId].push(roomData);
       this.admins[sessionId] = key;
+      setTimeout(
+        () => {
+          this.deleteSession(sessionId);
+        },
+        3 * 60 * 60 * 1000,
+      );
     } catch (error) {
       console.error('createRoom sırasında hata oluştu:', error);
       throw new InternalServerErrorException(
@@ -84,9 +90,20 @@ export class RoomService {
   }
 
   deleteSession(sessionId: string) {
-    delete this.rooms[sessionId];
-    delete this.admins[sessionId];
-    delete this.votes[sessionId];
-    delete this.users[sessionId];
+    if (this.rooms[sessionId]) {
+      delete this.rooms[sessionId];
+    }
+
+    if (this.admins[sessionId]) {
+      delete this.admins[sessionId];
+    }
+
+    if (this.votes[sessionId]) {
+      delete this.votes[sessionId];
+    }
+
+    if (this.users[sessionId]) {
+      delete this.users[sessionId];
+    }
   }
 }
